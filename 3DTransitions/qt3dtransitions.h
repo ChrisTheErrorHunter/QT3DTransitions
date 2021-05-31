@@ -17,5 +17,7 @@ public:
 
 private:
     Ui::QT3DTransitions *ui;
+    QImage *img;
+    int szer, wys;
 };
 #endif // QT3DTRANSITIONS_H

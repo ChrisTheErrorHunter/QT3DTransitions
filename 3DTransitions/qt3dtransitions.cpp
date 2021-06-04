@@ -81,51 +81,51 @@ void QT3DTransitions::paintPrism()
         vector[i].setX(vector[i].x() - szer / 2);
         vector[i].setY(vector[i].y() - wys / 2);
 
-        tmpY = ((vector[i].y() * cos(rotX)) - (vector[i].z() * sin(rotX)));
+        tmpY = ((vector[i].y() * cos(rotX)) - (vector[i].z() * sin(rotX))); //rotacjaX
         tmpZ = ((vector[i].y() * sin(rotX)) + (vector[i].z() * cos(rotX)));
         vector[i].setY(tmpY);
         vector[i].setZ(tmpZ);
 
-        tmpX = ((vector[i].x() * cos(rotY)) - (vector[i].z() * sin(rotY)));
+        tmpX = ((vector[i].x() * cos(rotY)) - (vector[i].z() * sin(rotY))); //rotacjaY
         tmpZ = (((-1) * vector[i].x() * sin(rotY)) + (vector[i].z() * cos(rotY)));
         vector[i].setX(tmpX);
         vector[i].setZ(tmpZ);
 
-        tmpX = ((vector[i].x() * cos(rotZ)) - (vector[i].y() * sin(rotZ)));
+        tmpX = ((vector[i].x() * cos(rotZ)) - (vector[i].y() * sin(rotZ))); //rotacjaZ
         tmpY = ((vector[i].x() * sin(rotZ)) + (vector[i].y() * cos(rotZ)));
         vector[i].setX(tmpX);
         vector[i].setY(tmpY);
 
-        tmpY = vector[i].y() + (vector[i].z() * tiltY);
+        tmpY = vector[i].y() + (vector[i].z() * tiltY); //tiltX
         tmpZ = vector[i].z() + (vector[i].z() * tiltZ);
         vector[i].setY(tmpY);
         vector[i].setZ(tmpZ);
 
-        tmpX = vector[i].x() + (vector[i].z() * tiltX);
+        tmpX = vector[i].x() + (vector[i].z() * tiltX); //tiltY
         tmpZ = vector[i].z() + (vector[i].z() * tiltZ);
         vector[i].setX(tmpX);
         vector[i].setZ(tmpZ);
 
-        tmpX = vector[i].x() + (vector[i].z() * tiltX);
+        tmpX = vector[i].x() + (vector[i].z() * tiltX); //tiltZ
         tmpY = vector[i].y() + (vector[i].z() * tiltY);
         vector[i].setX(tmpX);
         vector[i].setY(tmpY);
 
-        vector[i].setX((vector[i].x() * scaleX) + (szer / 2) + transX);
+        vector[i].setX((vector[i].x() * scaleX) + (szer / 2) + transX); //skalowanie i transpozycja
         vector[i].setY((vector[i].y() * scaleY) + (wys / 2) + transY);
         vector[i].setZ((vector[i].z() * scaleZ) + transZ);
 
-        vector[i].setX((vector[i].x() / ((vector[i].z() / 1000.0) + 1.0)));
+        vector[i].setX((vector[i].x() / ((vector[i].z() / 1000.0) + 1.0))); //rzut do 2D
         vector[i].setY((vector[i].y() / ((vector[i].z() / 1000.0) + 1.0)));
     }
-    drawLine(vector[2].x(), vector[2].y(), vector[3].x(), vector[3].y()); //dół
-    drawLine(vector[2].x(), vector[2].y(), vector[6].x(), vector[6].y());
-    drawLine(vector[3].x(), vector[3].y(), vector[7].x(), vector[7].y());
-    drawLine(vector[6].x(), vector[6].y(), vector[7].x(), vector[7].y());
     drawLine(vector[0].x(), vector[0].y(), vector[1].x(), vector[1].y()); //góra
     drawLine(vector[0].x(), vector[0].y(), vector[4].x(), vector[4].y());
     drawLine(vector[4].x(), vector[4].y(), vector[5].x(), vector[5].y());
     drawLine(vector[5].x(), vector[5].y(), vector[1].x(), vector[1].y());
+    drawLine(vector[2].x(), vector[2].y(), vector[3].x(), vector[3].y()); //dół
+    drawLine(vector[2].x(), vector[2].y(), vector[6].x(), vector[6].y());
+    drawLine(vector[3].x(), vector[3].y(), vector[7].x(), vector[7].y());
+    drawLine(vector[6].x(), vector[6].y(), vector[7].x(), vector[7].y());
     drawLine(vector[0].x(), vector[0].y(), vector[3].x(), vector[3].y()); //ściany
     drawLine(vector[1].x(), vector[1].y(), vector[2].x(), vector[2].y());
     drawLine(vector[4].x(), vector[4].y(), vector[7].x(), vector[7].y());

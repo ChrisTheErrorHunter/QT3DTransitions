@@ -49,7 +49,7 @@ void QT3DTransitions::drawLine(int x0, int y0, int x1, int y1)
         y = a * x + b;
         putPixel(x, y);
     }
-    for(y = y0; y != y1; (y < y1) ? y++ : y--)
+    for(y = y0; y != y1; (y <= y1) ? y++ : y--)
     {
         x0 = (y - b) / a;
         putPixel(x0, y);
@@ -63,8 +63,8 @@ void QT3DTransitions::paintPrism()
     vector.clear();
     vector.push_back(QVector3D((szer / 2) - (prismSize / 2), (wys / 2) - (prismSize / 2), 0));
     vector.push_back(QVector3D((szer / 2) + (prismSize / 2), (wys / 2) - (prismSize / 2), 0));
-    vector.push_back(QVector3D((szer / 2) - (prismSize / 2), (wys / 2) + (prismSize / 2), 0));
     vector.push_back(QVector3D((szer / 2) + (prismSize / 2), (wys / 2) + (prismSize / 2), 0));
+    vector.push_back(QVector3D((szer / 2) - (prismSize / 2), (wys / 2) + (prismSize / 2), 0));
     vector.push_back(QVector3D((szer / 2) - (prismSize / 2), (wys / 2) - (prismSize / 2), 0.7 * prismSize));
     vector.push_back(QVector3D((szer / 2) + (prismSize / 2), (wys / 2) - (prismSize / 2), 0.7 * prismSize));
     vector.push_back(QVector3D((szer / 2) + (prismSize / 2), (wys / 2) + (prismSize / 2), 0.7 * prismSize));
@@ -96,9 +96,11 @@ void QT3DTransitions::paintPrism()
             vector[i].setY(tmpY);
         }
         //tilt tutaj
+
+        //
         vector[i].setX((vector[i].x() * scaleX) + (szer / 2) + transX);
         vector[i].setY((vector[i].y() * scaleY) + (wys / 2) + transY);
-        vector[i].setX((vector[i].z() * scaleZ) + transZ);
+        vector[i].setZ((vector[i].z() * scaleZ) + transZ);
 
         vector[i].setX((vector[i].x() / ((vector[i].z() / 1000.0) + 1.0)));
         vector[i].setY((vector[i].y() / ((vector[i].z() / 1000.0) + 1.0)));
@@ -125,10 +127,23 @@ void QT3DTransitions::paintPrism()
 void QT3DTransitions::on_resetButton_clicked()
 {
     transX = 0; transY = 0; transZ = 0;
-    rotX = 0; rotY = 0; rotZ = 0;
+    rotX = 2.0; rotY = 2.0; rotZ = 2.0;
     tiltX = 0; tiltY = 0; tiltZ = 0;
-    scaleX = 100; scaleY = 100; scaleZ = 100;
+    scaleX = 1.0; scaleY = 1.0; scaleZ = 1.0;
+    ui->xTransSlider->setValue(transX);
+    ui->yTransSlider->setValue(transY);
+    ui->zTransSlider->setValue(transZ);
+    ui->xRotSlider->setValue(rotX * 180);
+    ui->yRotSlider->setValue(rotY * 180);
+    ui->zRotSlider->setValue(rotZ * 180);
+    ui->xTiltSlider->setValue(tiltX);
+    ui->yTiltSlider->setValue(tiltY);
+    ui->zTiltSlider->setValue(tiltZ);
+    ui->xScaleSlider->setValue(scaleX * 100);
+    ui->yScaleSlider->setValue(scaleY * 100);
+    ui->zScaleSlider->setValue(scaleZ * 100);
     paintPrism();
+    update();
 }
 
 void QT3DTransitions::on_exitButton_clicked()

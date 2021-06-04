@@ -23,11 +23,11 @@ private:
     QImage *img;
     int szer, wys;
     int beginX, beginY;
-    int prismSize = 100;
-    double transX = 0, transY = 0, transZ = 0;
-    double rotX = 0, rotY = 0, rotZ = 0;
-    double tiltX = 0, tiltY = 0, tiltZ = 0;
-    double scaleX = 100, scaleY = 100, scaleZ = 100;
+    double prismSize = 100.0;
+    double transX = 0.0, transY = 0.0, transZ = 0.0;
+    double rotX = 2.0, rotY = 2.0, rotZ = 2.0;
+    double tiltX = 0.0, tiltY = 0.0, tiltZ = 0.0;
+    double scaleX = 1.0, scaleY = 1.0, scaleZ = 1.0;
     std::vector<QVector3D> vector;
 
 private slots:

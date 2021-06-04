@@ -174,8 +174,11 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="minimum">
+      <number>360</number>
+     </property>
      <property name="maximum">
-      <number>720</number>
+      <number>1080</number>
      </property>
      <property name="value">
       <number>360</number>
@@ -193,8 +196,11 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="minimum">
+      <number>360</number>
+     </property>
      <property name="maximum">
-      <number>720</number>
+      <number>1080</number>
      </property>
      <property name="value">
       <number>360</number>
@@ -212,8 +218,11 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="minimum">
+      <number>360</number>
+     </property>
      <property name="maximum">
-      <number>720</number>
+      <number>1080</number>
      </property>
      <property name="value">
       <number>360</number>

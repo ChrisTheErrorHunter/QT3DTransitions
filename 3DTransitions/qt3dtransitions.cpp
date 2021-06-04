@@ -58,45 +58,55 @@ void QT3DTransitions::drawLine(int x0, int y0, int x1, int y1)
 
 void QT3DTransitions::paintPrism()
 {
-    int tmpX, tmpY, tmpZ;
+    double tmpX, tmpY, tmpZ;
     img->fill(Qt::black);
     vector.clear();
     vector.push_back(QVector3D((szer / 2) - (prismSize / 2), (wys / 2) - (prismSize / 2), 0));
     vector.push_back(QVector3D((szer / 2) + (prismSize / 2), (wys / 2) - (prismSize / 2), 0));
     vector.push_back(QVector3D((szer / 2) + (prismSize / 2), (wys / 2) + (prismSize / 2), 0));
     vector.push_back(QVector3D((szer / 2) - (prismSize / 2), (wys / 2) + (prismSize / 2), 0));
-    vector.push_back(QVector3D((szer / 2) - (prismSize / 2), (wys / 2) - (prismSize / 2), 0.7 * prismSize));
-    vector.push_back(QVector3D((szer / 2) + (prismSize / 2), (wys / 2) - (prismSize / 2), 0.7 * prismSize));
-    vector.push_back(QVector3D((szer / 2) + (prismSize / 2), (wys / 2) + (prismSize / 2), 0.7 * prismSize));
-    vector.push_back(QVector3D((szer / 2) - (prismSize / 2), (wys / 2) + (prismSize / 2), 0.7 * prismSize));
+    vector.push_back(QVector3D((szer / 2) - (prismSize / 2), (wys / 2) - (prismSize / 2), prismSize));
+    vector.push_back(QVector3D((szer / 2) + (prismSize / 2), (wys / 2) - (prismSize / 2), prismSize));
+    vector.push_back(QVector3D((szer / 2) + (prismSize / 2), (wys / 2) + (prismSize / 2), prismSize));
+    vector.push_back(QVector3D((szer / 2) - (prismSize / 2), (wys / 2) + (prismSize / 2), prismSize));
     for(int i = 0; i < (int)vector.size(); i++)
     {
         vector[i].setX(vector[i].x() - szer / 2);
         vector[i].setY(vector[i].y() - wys / 2);
 
-        if(true)
-        {
+
             tmpY = ((vector[i].y() * cos(rotX)) - (vector[i].z() * sin(rotX)));
             tmpZ = ((vector[i].y() * sin(rotX)) + (vector[i].z() * cos(rotX)));
             vector[i].setY(tmpY);
             vector[i].setZ(tmpZ);
-        }
-        if(true)
-        {
+
             tmpX = ((vector[i].x() * cos(rotY)) - (vector[i].z() * sin(rotY)));
             tmpZ = (((-1) * vector[i].x() * sin(rotY)) + (vector[i].z() * cos(rotY)));
             vector[i].setX(tmpX);
             vector[i].setZ(tmpZ);
-        }
-        if(true)
-        {
+
             tmpY = ((vector[i].x() * cos(rotZ)) - (vector[i].y() * sin(rotZ)));
             tmpZ = ((vector[i].x() * sin(rotZ)) + (vector[i].y() * cos(rotZ)));
             vector[i].setX(tmpX);
             vector[i].setY(tmpY);
-        }
-        //tilt tutaj
 
+        //tilt
+
+             tmpY = vector[i].y() + (vector[i].z() * tiltY);
+             tmpZ = vector[i].z() + (vector[i].z() * tiltZ);
+             vector[i].setY(tmpY);
+             vector[i].setZ(tmpZ);
+
+
+             tmpX = vector[i].x() + (vector[i].z() * tiltX);
+             tmpZ = vector[i].z() + (vector[i].z() * tiltZ);
+             vector[i].setX(tmpX);
+             vector[i].setZ(tmpZ);
+
+             tmpX = vector[i].x() + (vector[i].z() * tiltX);
+             tmpY = vector[i].y() + (vector[i].z() * tiltY);
+             vector[i].setX(tmpX);
+             vector[i].setY(tmpY);
         //
         vector[i].setX((vector[i].x() * scaleX) + (szer / 2) + transX);
         vector[i].setY((vector[i].y() * scaleY) + (wys / 2) + transY);
@@ -127,7 +137,7 @@ void QT3DTransitions::paintPrism()
 void QT3DTransitions::on_resetButton_clicked()
 {
     transX = 0; transY = 0; transZ = 0;
-    rotX = 2.0; rotY = 2.0; rotZ = 2.0;
+    rotX = 580.0 / 180.0, rotY = 600.0 / 180.0, rotZ = 840.0 / 180.0;
     tiltX = 0; tiltY = 0; tiltZ = 0;
     scaleX = 1.0; scaleY = 1.0; scaleZ = 1.0;
     ui->xTransSlider->setValue(transX);
@@ -189,19 +199,19 @@ void QT3DTransitions::on_zRotSlider_valueChanged(int value)
 
 void QT3DTransitions::on_xTiltSlider_valueChanged(int value)
 {
-    tiltX = (double)value;
+    tiltX = (double)value / 100.0;
     paintPrism();
 }
 
 void QT3DTransitions::on_yTiltSlider_valueChanged(int value)
 {
-    tiltY = (double)value;
+    tiltY = (double)value / 100.0;
     paintPrism();
 }
 
 void QT3DTransitions::on_zTiltSlider_valueChanged(int value)
 {
-    tiltZ = (double)value;
+    tiltZ = (double)value / 100.0;
     paintPrism();
 }
 

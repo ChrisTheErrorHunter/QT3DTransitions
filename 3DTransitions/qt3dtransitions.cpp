@@ -91,8 +91,8 @@ void QT3DTransitions::paintPrism()
         vector[i].setX(tmpX);
         vector[i].setZ(tmpZ);
 
-        tmpY = ((vector[i].x() * cos(rotZ)) - (vector[i].y() * sin(rotZ)));
-        tmpZ = ((vector[i].x() * sin(rotZ)) + (vector[i].y() * cos(rotZ)));
+        tmpX = ((vector[i].x() * cos(rotZ)) - (vector[i].y() * sin(rotZ)));
+        tmpY = ((vector[i].x() * sin(rotZ)) + (vector[i].y() * cos(rotZ)));
         vector[i].setX(tmpX);
         vector[i].setY(tmpY);
 
@@ -136,7 +136,7 @@ void QT3DTransitions::paintPrism()
 void QT3DTransitions::on_resetButton_clicked()
 {
     transX = 0; transY = 0; transZ = 0;
-    rotX = 580.0 / 180.0, rotY = 600.0 / 180.0, rotZ = 840.0 / 180.0;
+    rotX = 0.0, rotY = 0.0, rotZ = 0.0;
     tiltX = 0; tiltY = 0; tiltZ = 0;
     scaleX = 1.0; scaleY = 1.0; scaleZ = 1.0;
     ui->xTransSlider->setValue(transX);

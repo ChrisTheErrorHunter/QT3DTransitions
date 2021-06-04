@@ -175,10 +175,10 @@
       </rect>
      </property>
      <property name="minimum">
-      <number>360</number>
+      <number>0</number>
      </property>
      <property name="maximum">
-      <number>1080</number>
+      <number>4000</number>
      </property>
      <property name="value">
       <number>360</number>
@@ -197,10 +197,10 @@
       </rect>
      </property>
      <property name="minimum">
-      <number>360</number>
+      <number>0</number>
      </property>
      <property name="maximum">
-      <number>1080</number>
+      <number>4000</number>
      </property>
      <property name="value">
       <number>360</number>
@@ -219,10 +219,10 @@
       </rect>
      </property>
      <property name="minimum">
-      <number>360</number>
+      <number>0</number>
      </property>
      <property name="maximum">
-      <number>1080</number>
+      <number>4000</number>
      </property>
      <property name="value">
       <number>360</number>

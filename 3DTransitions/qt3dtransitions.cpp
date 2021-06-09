@@ -38,28 +38,30 @@ void QT3DTransitions::putPixel(int x, int y)
     }
 }
 
-void QT3DTransitions::drawLine(int x0, int y0, int x1, int y1)
-{
-    float a, b;
-    int x, y;
-    a = (float)(y1 - y0) / (x1 - x0);
-    b = y0 - a * x0;
-    if(x0 == x1)
+void QT3DTransitions::drawLine(double x0, double y0, double x1, double y1) //nowa funkcja od rysowania linii, poprzednia posiadała buga,
+{                                                                           // który ujawnił się dopiero przy rysowaniu ścian widocznych
+    double a = (y1 - y0) / (x1 - x0);
+    double b = y0 - a * x0;
+    double c = (x1 - x0) / (y1 - y0);
+    double d = x0 - c * y0;
+    double y;
+    if(x0 > x1) std::swap(x0, x1);
+    if(y0 > y1) std::swap(y0, y1);
+    if(abs(a) <= 1)
     {
-        for(int i = y0; i < y1; (y0 < y1) ? i++ : i--)
+        for(int x = x0; x <= x1; x++)
         {
-            putPixel(x0, i);
+            y = a * x + b;
+            putPixel(x, y);
         }
     }
-    for(x = x0; x != x1; (x < x1) ? x++ : x--)
+    else
     {
-        y = a * x + b;
-        putPixel(x, y);
-    }
-    for(y = y0; y != y1; (y <= y1) ? y++ : y--)
-    {
-        x0 = (y - b) / a;
-        putPixel(x0, y);
+        for(int x = y0; x <= y1; x++)
+        {
+            y = c * x + d;
+            putPixel(y, x);
+        }
     }
 }
 
@@ -106,42 +108,42 @@ void QT3DTransitions::paintPrism()
     }
     if(ui->visibleCheck->isChecked())
     {
-        if(visibilityCheck(vector[0].x(), vector[0].y(), vector[4].x(), vector[4].y(), vector[1].x(), vector[1].y())) //gora
+        if(visibilityCheck(vector[0].x(), vector[0].y(), vector[4].x(), vector[4].y(), vector[1].x(), vector[1].y())) //Góra
         {
             drawLine(vector[0].x(), vector[0].y(), vector[4].x(), vector[4].y());
             drawLine(vector[0].x(), vector[0].y(), vector[1].x(), vector[1].y());
-            drawLine(vector[1].x(), vector[1].y(), vector[5].x(), vector[5].y());
-            drawLine(vector[4].x(), vector[4].y(), vector[5].x(), vector[5].y());
+            drawLine(vector[5].x(), vector[5].y(), vector[1].x(), vector[1].y());
+            drawLine(vector[5].x(), vector[5].y(), vector[4].x(), vector[4].y());
         }
-        if(visibilityCheck(vector[3].x(), vector[3].y(), vector[2].x(), vector[2].y(), vector[7].x(), vector[7].y())) // dol
+        if(visibilityCheck(vector[3].x(), vector[3].y(), vector[2].x(), vector[2].y(), vector[7].x(), vector[7].y())) //Dół
         {
             drawLine(vector[3].x(), vector[3].y(), vector[2].x(), vector[2].y());
             drawLine(vector[3].x(), vector[3].y(), vector[7].x(), vector[7].y());
             drawLine(vector[6].x(), vector[6].y(), vector[2].x(), vector[2].y());
             drawLine(vector[6].x(), vector[6].y(), vector[7].x(), vector[7].y());
         }
-        if(visibilityCheck(vector[0].x(), vector[0].y(), vector[1].x(), vector[1].y(), vector[3].x(), vector[3].y())) //przod
+        if(visibilityCheck(vector[0].x(), vector[0].y(), vector[1].x(), vector[1].y(), vector[3].x(), vector[3].y())) //Przód
         {
             drawLine(vector[0].x(), vector[0].y(), vector[1].x(), vector[1].y());
             drawLine(vector[0].x(), vector[0].y(), vector[3].x(), vector[3].y());
             drawLine(vector[2].x(), vector[2].y(), vector[3].x(), vector[3].y());
             drawLine(vector[2].x(), vector[2].y(), vector[1].x(), vector[1].y());
         }
-        if(visibilityCheck(vector[4].x(), vector[4].y(), vector[7].x(), vector[7].y(), vector[5].x(), vector[5].y())) //tyl
+        if(visibilityCheck(vector[4].x(), vector[4].y(), vector[7].x(), vector[7].y(), vector[5].x(), vector[5].y())) //Tył
         {
             drawLine(vector[4].x(), vector[4].y(), vector[7].x(), vector[7].y());
             drawLine(vector[4].x(), vector[4].y(), vector[5].x(), vector[5].y());
             drawLine(vector[6].x(), vector[6].y(), vector[5].x(), vector[5].y());
             drawLine(vector[6].x(), vector[6].y(), vector[7].x(), vector[7].y());
         }
-        if(visibilityCheck(vector[4].x(), vector[4].y(), vector[0].x(), vector[0].y(), vector[7].x(), vector[7].y()))//lewa
+        if(visibilityCheck(vector[4].x(), vector[4].y(), vector[0].x(), vector[0].y(), vector[7].x(), vector[7].y())) //Lewa
         {
            drawLine(vector[0].x(), vector[0].y(), vector[4].x(), vector[4].y());
            drawLine(vector[0].x(), vector[0].y(), vector[3].x(), vector[3].y());
            drawLine(vector[7].x(), vector[7].y(), vector[3].x(), vector[3].y());
            drawLine(vector[7].x(), vector[7].y(), vector[4].x(), vector[4].y());
         }
-        if(visibilityCheck(vector[1].x(), vector[1].y(), vector[5].x(), vector[5].y(), vector[6].x(), vector[6].y())) //prawa
+        if(visibilityCheck(vector[1].x(), vector[1].y(), vector[5].x(), vector[5].y(), vector[2].x(), vector[2].y())) //Prawa
         {
             drawLine(vector[1].x(), vector[1].y(), vector[2].x(), vector[2].y());
             drawLine(vector[1].x(), vector[1].y(), vector[5].x(), vector[5].y());
@@ -169,13 +171,13 @@ void QT3DTransitions::paintPrism()
 
 bool QT3DTransitions::visibilityCheck(int x0, int y0, int x1, int y1, int x2, int y2)
 {
-    return (((x1 - x0) * (y2 - y0)) - ((x2 - x0) * (y1 - y0))) > 0; // |M| > 0 dla widocznych : zródło https://en.wikipedia.org/wiki/Back-face_culling
+    return ((((x1 - x0) * (y2 - y0)) - ((x2 - x0) * (y1 - y0))) > 0); // |M| > 0 dla widocznych : zródło https://en.wikipedia.org/wiki/Back-face_culling
 }
 
 void QT3DTransitions::on_resetButton_clicked()
 {
     transX = 0; transY = 0; transZ = 0;
-    rotX = 0.0, rotY = 0.0, rotZ = 6.28;
+    rotX = 0.0, rotY = 0.0, rotZ = 0.0;
     tiltX = 0; tiltY = 0; tiltZ = 0;
     scaleX = 1.0; scaleY = 1.0; scaleZ = 1.0;
     ui->xTransSlider->setValue(transX);

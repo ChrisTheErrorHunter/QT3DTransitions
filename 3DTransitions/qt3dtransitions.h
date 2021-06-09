@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QVector3D>
 #include <cmath>
+#include <cstdlib>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class QT3DTransitions; }
@@ -33,7 +34,7 @@ private:
 private slots:
     void paintEvent(QPaintEvent*);
     void putPixel(int x, int y);
-    void drawLine(int x0, int y0, int x1, int y1);
+    void drawLine(double x0, double y0, double x1, double y1);
     void paintPrism();
     bool visibilityCheck(int x1, int x2, int y1, int y2, int z1, int z2);
     void on_resetButton_clicked();

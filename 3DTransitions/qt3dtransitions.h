@@ -35,6 +35,7 @@ private slots:
     void putPixel(int x, int y);
     void drawLine(int x0, int y0, int x1, int y1);
     void paintPrism();
+    bool visibilityCheck(int x1, int x2, int y1, int y2, int z1, int z2);
     void on_resetButton_clicked();
     void on_exitButton_clicked();
     void on_xTransSlider_valueChanged(int value);
@@ -49,5 +50,6 @@ private slots:
     void on_xScaleSlider_valueChanged(int value);
     void on_yScaleSlider_valueChanged(int value);
     void on_zScaleSlider_valueChanged(int value);
+    void on_visibleCheck_clicked();
 };
 #endif // QT3DTRANSITIONS_H

@@ -6,10 +6,19 @@
 #include <QVector3D>
 #include <cmath>
 #include <cstdlib>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class QT3DTransitions; }
 QT_END_NAMESPACE
+
+enum fmode
+{
+    minX,
+    minY,
+    maxX,
+    maxY
+};
 
 class QT3DTransitions : public QMainWindow
 {
@@ -22,6 +31,7 @@ public:
 private:
     Ui::QT3DTransitions *ui;
     QImage *img;
+    QImage *sourceTex;
     int szer, wys;
     int beginX, beginY;
     double prismSize = 100.0;
@@ -30,12 +40,17 @@ private:
     double tiltX = 0.0, tiltY = 0.0, tiltZ = 0.0;
     double scaleX = 1.0, scaleY = 1.0, scaleZ = 1.0;
     std::vector<QVector3D> vector;
+    std::vector<QPoint> sourceVec;
+    std::vector<QPoint> targetVec;
 
 private slots:
     void paintEvent(QPaintEvent*);
-    void putPixel(int x, int y);
+    void putPixel(int x, int y, QColor color, QImage *img);
     void drawLine(double x0, double y0, double x1, double y1);
     void paintPrism();
+    void texture(std::vector<QPoint> vector);
+    int findBorder(std::vector<QPoint> vector, fmode mode);
+    QColor pixelColor(int x, int y, QImage *img);
     bool visibilityCheck(int x1, int x2, int y1, int y2, int z1, int z2);
     void on_resetButton_clicked();
     void on_exitButton_clicked();

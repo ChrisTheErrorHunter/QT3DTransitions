@@ -12,7 +12,12 @@ QT3DTransitions::QT3DTransitions(QWidget *parent)
     beginY = ui->mainFrame->y();
     img = new QImage(szer, wys, QImage::Format_RGB32);
     img->fill(Qt::black);
+    sourceTex = new QImage(":/woodtex.jpg");
+    sourceVec.push_back(QPoint(256, 1));
+    sourceVec.push_back(QPoint(510, 1));
+    sourceVec.push_back(QPoint(510, 510));
     on_resetButton_clicked();
+    qDebug()<<szer<<" "<<wys;
 }
 
 QT3DTransitions::~QT3DTransitions()
@@ -26,15 +31,15 @@ void QT3DTransitions::paintEvent(QPaintEvent*)
     p.drawImage(beginX, beginY, *img);
 }
 
-void QT3DTransitions::putPixel(int x, int y)
+void QT3DTransitions::putPixel(int x, int y, QColor color, QImage *img)
 {
     unsigned char *pixel;
     pixel = img -> bits();
     if(!(x <= 0 || x >= szer || y <= 0 || y >= wys))
     {
-        pixel[szer * 4 * y + 4 * x] = uchar(255);
-        pixel[szer * 4 * y + 4 * x + 1] = uchar(255);
-        pixel[szer * 4 * y + 4 * x + 2] = uchar(255);
+        pixel[szer * 4 * y + 4 * x] = uchar(color.blue());
+        pixel[szer * 4 * y + 4 * x + 1] = uchar(color.green());
+        pixel[szer * 4 * y + 4 * x + 2] = uchar(color.red());
     }
 }
 
@@ -52,7 +57,7 @@ void QT3DTransitions::drawLine(double x0, double y0, double x1, double y1) //now
         for(int x = x0; x <= x1; x++)
         {
             y = a * x + b;
-            putPixel(x, y);
+            putPixel(x, y, Qt::white, img);
         }
     }
     else
@@ -60,7 +65,7 @@ void QT3DTransitions::drawLine(double x0, double y0, double x1, double y1) //now
         for(int x = y0; x <= y1; x++)
         {
             y = c * x + d;
-            putPixel(y, x);
+            putPixel(y, x, Qt::white, img);
         }
     }
 }
@@ -172,6 +177,118 @@ void QT3DTransitions::paintPrism()
 bool QT3DTransitions::visibilityCheck(int x0, int y0, int x1, int y1, int x2, int y2)
 {
     return ((((x1 - x0) * (y2 - y0)) - ((x2 - x0) * (y1 - y0))) > 0); // |M| > 0 dla widocznych : zródło https://en.wikipedia.org/wiki/Back-face_culling
+}
+
+void QT3DTransitions::texture(std::vector<QPoint> vector)
+{
+    double xa, xb, xc;
+    double ya, yb, yc;
+    double u, v, w;
+    double mainMatrixDet, vDet, wDet;
+    int Ymax = findBorder(vector, maxY);
+    int Ymin = findBorder(vector, minY);
+    int Xmax = findBorder(vector, maxX);
+    int Xmin = findBorder(vector, minX);
+    QColor cColor;
+    xa = vector[0].x();
+    xb = vector[1].x();
+    xc = vector[2].x();
+    ya = vector[0].y();
+    yb = vector[1].y();
+    yc = vector[2].y();
+    mainMatrixDet = (((xb - xa) * (yc - ya)) - ((yb - ya) * (xc - xa)));
+    for(int yi = Ymin; yi < Ymax; yi++)
+    {
+        for(int xi = Xmin; xi < Xmax; xi++)
+        {
+            vDet = ((xi - xa) * (yc - ya)) - ((xc - xa) * (yi - ya));
+            v = vDet / mainMatrixDet;
+            wDet = ((xb - xa) * (yi - ya)) - ((yb - ya) * (xi - xa));
+            w = wDet / mainMatrixDet;
+            u = (1 - w - v);
+
+            if((0 <= u) && (u <= 1) && (0 <= v) && (v <= 1) && (0 <= w) && (w <= 1))
+            {
+                double xst, yst, xat, yat, xbt, ybt, xct, yct;
+                xat = sourceVec[0].x();
+                yat = sourceVec[0].y();
+                xbt = sourceVec[1].x();
+                ybt = sourceVec[1].y();
+                xct = sourceVec[2].x();
+                yct = sourceVec[2].y();
+                xst = (u * xat) + v * (xbt) + w * (xct);
+                yst = (u * yat) + v * (ybt) + w * (yct);
+                cColor = pixelColor(xst, yst, sourceTex);
+                putPixel(xi, yi, cColor, img);;
+                //targetTex->setPixelColor(xi,yi, sourceTex->pixel(xst, yst));
+                update();
+            }
+        }
+    }
+}
+
+QColor QT3DTransitions::pixelColor(int x, int y, QImage *img)
+{
+    x += beginX - 10;
+    y += beginY - 10;
+    QColor ret;
+    unsigned char *pixel;
+    pixel = img->bits();
+    ret.setBlue(pixel[szer * 4 * y + 4 * x]);
+    ret.setGreen(pixel[szer * 4 * y + 4 * x + 1]);
+    ret.setRed(pixel[szer * 4 * y + 4 * x + 2]);
+    return ret;
+}
+
+int QT3DTransitions::findBorder(std::vector<QPoint> vector, fmode mode)
+{
+    int resault;
+    if(mode == minX)
+    {
+        resault = vector[0].x();
+        for(int i = 1; i < 3; i++)
+        {
+            if(resault > vector[i].x())
+            {
+                resault = vector[i].x();
+            }
+        }
+    }
+    else if(mode == minY)
+    {
+        resault = vector[0].y();
+        for(int i = 1; i < 3; i++)
+        {
+            if(resault > vector[i].y())
+            {
+                resault = vector[i].y();
+            }
+        }
+    }
+    else if(mode == maxX)
+    {
+        resault = vector[0].x();
+        for(int i = 1; i < 3; i++)
+        {
+            if(resault < vector[i].x())
+            {
+                resault = vector[i].x();
+            }
+        }
+    }
+    else if(mode == maxY)
+    {
+        resault = vector[0].y();
+        for(int i = 1; i < 3; i++)
+        {
+            if(resault < vector[i].y())
+            {
+                resault = vector[i].y();
+            }
+        }
+    }
+    else resault = -1;
+    return resault;
 }
 
 void QT3DTransitions::on_resetButton_clicked()

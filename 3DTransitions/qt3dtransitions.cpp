@@ -111,14 +111,22 @@ void QT3DTransitions::paintPrism()
         vector[i].setX((vector[i].x() / ((vector[i].z() / szer) + 1.0))); //rzut do 2D
         vector[i].setY((vector[i].y() / ((vector[i].z() / wys) + 1.0)));
     }
-    if(ui->visibleCheck->isChecked())
-    {
         if(visibilityCheck(vector[0].x(), vector[0].y(), vector[4].x(), vector[4].y(), vector[1].x(), vector[1].y())) //Góra
         {
             drawLine(vector[0].x(), vector[0].y(), vector[4].x(), vector[4].y());
             drawLine(vector[0].x(), vector[0].y(), vector[1].x(), vector[1].y());
             drawLine(vector[5].x(), vector[5].y(), vector[1].x(), vector[1].y());
             drawLine(vector[5].x(), vector[5].y(), vector[4].x(), vector[4].y());
+            targetVec.push_back(QPoint(vector[0].x(), vector[0].y()));
+            targetVec.push_back(QPoint(vector[4].x(), vector[4].y()));
+            targetVec.push_back(QPoint(vector[1].x(), vector[1].y()));
+            texture(targetVec);
+            targetVec.clear();
+            targetVec.push_back(QPoint(vector[5].x(), vector[5].y()));
+            targetVec.push_back(QPoint(vector[4].x(), vector[4].y()));
+            targetVec.push_back(QPoint(vector[1].x(), vector[1].y()));
+            texture(targetVec);
+            targetVec.clear();
         }
         if(visibilityCheck(vector[3].x(), vector[3].y(), vector[2].x(), vector[2].y(), vector[7].x(), vector[7].y())) //Dół
         {
@@ -126,6 +134,16 @@ void QT3DTransitions::paintPrism()
             drawLine(vector[3].x(), vector[3].y(), vector[7].x(), vector[7].y());
             drawLine(vector[6].x(), vector[6].y(), vector[2].x(), vector[2].y());
             drawLine(vector[6].x(), vector[6].y(), vector[7].x(), vector[7].y());
+            targetVec.push_back(QPoint(vector[3].x(), vector[3].y()));
+            targetVec.push_back(QPoint(vector[2].x(), vector[2].y()));
+            targetVec.push_back(QPoint(vector[7].x(), vector[7].y()));
+            texture(targetVec);
+            targetVec.clear();
+            targetVec.push_back(QPoint(vector[6].x(), vector[6].y()));
+            targetVec.push_back(QPoint(vector[2].x(), vector[2].y()));
+            targetVec.push_back(QPoint(vector[7].x(), vector[7].y()));
+            texture(targetVec);
+            targetVec.clear();
         }
         if(visibilityCheck(vector[0].x(), vector[0].y(), vector[1].x(), vector[1].y(), vector[3].x(), vector[3].y())) //Przód
         {
@@ -133,6 +151,17 @@ void QT3DTransitions::paintPrism()
             drawLine(vector[0].x(), vector[0].y(), vector[3].x(), vector[3].y());
             drawLine(vector[2].x(), vector[2].y(), vector[3].x(), vector[3].y());
             drawLine(vector[2].x(), vector[2].y(), vector[1].x(), vector[1].y());
+            targetVec.push_back(QPoint(vector[0].x(), vector[0].y()));
+            targetVec.push_back(QPoint(vector[1].x(), vector[1].y()));
+            targetVec.push_back(QPoint(vector[3].x(), vector[3].y()));
+            texture(targetVec);
+            targetVec.clear();
+            targetVec.push_back(QPoint(vector[2].x(), vector[2].y()));
+            targetVec.push_back(QPoint(vector[1].x(), vector[1].y()));
+            targetVec.push_back(QPoint(vector[3].x(), vector[3].y()));
+            texture(targetVec);
+            targetVec.clear();
+
         }
         if(visibilityCheck(vector[4].x(), vector[4].y(), vector[7].x(), vector[7].y(), vector[5].x(), vector[5].y())) //Tył
         {
@@ -140,6 +169,16 @@ void QT3DTransitions::paintPrism()
             drawLine(vector[4].x(), vector[4].y(), vector[5].x(), vector[5].y());
             drawLine(vector[6].x(), vector[6].y(), vector[5].x(), vector[5].y());
             drawLine(vector[6].x(), vector[6].y(), vector[7].x(), vector[7].y());
+            targetVec.push_back(QPoint(vector[4].x(), vector[4].y()));
+            targetVec.push_back(QPoint(vector[7].x(), vector[7].y()));
+            targetVec.push_back(QPoint(vector[5].x(), vector[5].y()));
+            texture(targetVec);
+            targetVec.clear();
+            targetVec.push_back(QPoint(vector[6].x(), vector[6].y()));
+            targetVec.push_back(QPoint(vector[7].x(), vector[7].y()));
+            targetVec.push_back(QPoint(vector[5].x(), vector[5].y()));
+            texture(targetVec);
+            targetVec.clear();
         }
         if(visibilityCheck(vector[4].x(), vector[4].y(), vector[0].x(), vector[0].y(), vector[7].x(), vector[7].y())) //Lewa
         {
@@ -147,6 +186,16 @@ void QT3DTransitions::paintPrism()
            drawLine(vector[0].x(), vector[0].y(), vector[3].x(), vector[3].y());
            drawLine(vector[7].x(), vector[7].y(), vector[3].x(), vector[3].y());
            drawLine(vector[7].x(), vector[7].y(), vector[4].x(), vector[4].y());
+           targetVec.push_back(QPoint(vector[4].x(), vector[4].y()));
+           targetVec.push_back(QPoint(vector[0].x(), vector[0].y()));
+           targetVec.push_back(QPoint(vector[7].x(), vector[7].y()));
+           texture(targetVec);
+           targetVec.clear();
+           targetVec.push_back(QPoint(vector[3].x(), vector[3].y()));
+           targetVec.push_back(QPoint(vector[0].x(), vector[0].y()));
+           targetVec.push_back(QPoint(vector[7].x(), vector[7].y()));
+           texture(targetVec);
+           targetVec.clear();
         }
         if(visibilityCheck(vector[1].x(), vector[1].y(), vector[5].x(), vector[5].y(), vector[2].x(), vector[2].y())) //Prawa
         {
@@ -154,23 +203,18 @@ void QT3DTransitions::paintPrism()
             drawLine(vector[1].x(), vector[1].y(), vector[5].x(), vector[5].y());
             drawLine(vector[6].x(), vector[6].y(), vector[2].x(), vector[2].y());
             drawLine(vector[6].x(), vector[6].y(), vector[5].x(), vector[5].y());
+            targetVec.push_back(QPoint(vector[1].x(), vector[1].y()));
+            targetVec.push_back(QPoint(vector[5].x(), vector[5].y()));
+            targetVec.push_back(QPoint(vector[2].x(), vector[2].y()));
+            texture(targetVec);
+            targetVec.clear();
+            targetVec.push_back(QPoint(vector[6].x(), vector[6].y()));
+            targetVec.push_back(QPoint(vector[5].x(), vector[5].y()));
+            targetVec.push_back(QPoint(vector[2].x(), vector[2].y()));
+            texture(targetVec);
+            targetVec.clear();
         }
-    }
-    else
-    {
-        drawLine(vector[0].x(), vector[0].y(), vector[1].x(), vector[1].y()); //góra
-        drawLine(vector[0].x(), vector[0].y(), vector[4].x(), vector[4].y());
-        drawLine(vector[4].x(), vector[4].y(), vector[5].x(), vector[5].y());
-        drawLine(vector[5].x(), vector[5].y(), vector[1].x(), vector[1].y());
-        drawLine(vector[2].x(), vector[2].y(), vector[3].x(), vector[3].y()); //dół
-        drawLine(vector[2].x(), vector[2].y(), vector[6].x(), vector[6].y());
-        drawLine(vector[3].x(), vector[3].y(), vector[7].x(), vector[7].y());
-        drawLine(vector[6].x(), vector[6].y(), vector[7].x(), vector[7].y());
-        drawLine(vector[0].x(), vector[0].y(), vector[3].x(), vector[3].y()); //ściany
-        drawLine(vector[1].x(), vector[1].y(), vector[2].x(), vector[2].y());
-        drawLine(vector[4].x(), vector[4].y(), vector[7].x(), vector[7].y());
-        drawLine(vector[5].x(), vector[5].y(), vector[6].x(), vector[6].y());
-    }
+
     update();
 }
 
